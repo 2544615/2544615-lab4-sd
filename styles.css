@@ -3,3 +3,9 @@ h2 {
     text-align: center;
     background-color: grey;
   }
+
+h1{
+  color: navy;
+  background-color: lightblue;
+  text-align: center;
+}
