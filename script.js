@@ -4,8 +4,15 @@ if(c_name){
     c_name.addEventListener('click',function(){
         let userInput=document.getElementById('country_name').value.trim();
         
-        if (userInput){
+        if(userInput){
             getCountryData(userInput);
+        }
+        else {
+            try {
+                throw new Error("Please enter the country name!");
+            } catch (error) {
+                alert(error.message); // Display as a popup alert
+            }
         }
     });
 
@@ -17,7 +24,7 @@ if(c_name){
                 }
                 return response.json();
             })
-            .then(data =>{
+            .then(data=>{
                 displayCountryInfo(data);
                 displayNeighbouringCountries(data);
             })
@@ -29,8 +36,8 @@ if(c_name){
     }
 
     function displayCountryInfo(data){
-        const resultDiv = document.getElementById('country-info');
-        resultDiv.innerHTML = `
+        const resultDiv= document.getElementById('country-info');
+        resultDiv.innerHTML= `
             <h2><i>${data[0].name.common}</i></h2>
             <p><b>Capital:</b> ${data[0].capital ? data[0].capital[0] : 'N/A'}</p>
             <p><b>Population:</b> ${data[0].population.toLocaleString()}</p>
@@ -41,17 +48,17 @@ if(c_name){
     }
 
     function displayNeighbouringCountries(data) {
-        const resultDiv = document.getElementById('bordering-countries');
-        const borders = data[0].borders;
+        const resultDiv= document.getElementById('bordering-countries');
+        const borders= data[0].borders;
         
-        if (!borders || borders.length === 0) {
-            resultDiv.innerHTML = `<p>No neighbouring countries.</p>`;
+        if (borders.length===0 || !borders) {
+            resultDiv.innerHTML= `<p>No neighbouring countries.</p>`;
             return;
         }
-        resultDiv.innerHTML = `<h4>Neighbouring Countries:</h4><ul></ul>`;
-        const ul = resultDiv.querySelector('ul');
+        resultDiv.innerHTML=`<h4>Neighbouring Countries:</h4><ul></ul>`;
+        const ul=resultDiv.querySelector('ul');
 
-        borders.forEach(code => {
+        borders.forEach(code =>{
             fetch(`https://restcountries.com/v3.1/alpha/${code}`)
                 .then(response => {
                     return response.json();
@@ -67,9 +74,7 @@ if(c_name){
                     `;
                     ul.appendChild(li);
                 })
-                .catch(error => console.error(`Error fetching neighbour data: ${error}`));
         });
     }
-} else {
-    console.log("Please enter the country name!");
+
 }
